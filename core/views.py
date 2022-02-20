@@ -22,9 +22,6 @@ class AnimalsView(View):
   def get(self, request) -> JsonResponse:
     limit, offset, has_photos = Utils.request_query_params(request=request.GET)
 
-    # Todo: Remove print
-    # print('[GET /pets]: limit={}, offset={}, has_photos={}'.format(limit, offset, has_photos))
-
     if has_photos is None:
       animals = Animal.objects.all()[offset:offset+limit]
     else:
@@ -52,14 +49,8 @@ class AnimalsView(View):
 
       return JsonResponse(data=created_animal.to_json(request), status=ResponseCodes.CREATED)
     except (json.JSONDecodeError, TypeError) as error:
-      # Todo: remove print
-      # print('[POST /pets]: Creation failed with', error)
-      
       return Responses.bad_request(f'[POST /pets]: Invalid data format recieved: {body}.')
     except KeyError as key:
-      # Todo: remove print
-      # print('[POST /pets]: Creation failed with', key)
-      
       return Responses.bad_request(f'[POST /pets]: Required fields {key} not provided: {body}.')
 
   def delete(self, request) -> JsonResponse:
@@ -97,9 +88,6 @@ class AnimalsView(View):
       return JsonResponse(data=response, status=status_code)
     
     except (json.JSONDecodeError, TypeError) as error:
-      # Todo: remove print
-      # print('[DELETE /pets]: Delete failed with', error)
-      
       return Responses.bad_request(f'[POST /pets]: Invalid data format recieved: {body}')
 
 
