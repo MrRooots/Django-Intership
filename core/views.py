@@ -26,6 +26,8 @@ class AnimalsView(View):
       animals = Animal.objects.all()[offset:offset+limit]
     else:
       animals = Animal.objects.filter(photos__isnull=not has_photos)[offset:offset+limit]
+      for animal in animals:
+        print(animal.id, animal.photos.all())
 
     return JsonResponse(
       data={
@@ -48,7 +50,7 @@ class AnimalsView(View):
       )
 
       return JsonResponse(data=created_animal.to_json(request), status=ResponseCodes.CREATED)
-    except (json.JSONDecodeError, TypeError) as error:
+    except (json.JSONDecodeError, TypeError):
       return Responses.bad_request(f'[POST /pets]: Invalid data format recieved: {body}.')
     except KeyError as key:
       return Responses.bad_request(f'[POST /pets]: Required fields {key} not provided: {body}.')
