@@ -98,7 +98,12 @@ class Photo(models.Model):
         "filename": self.filename,
       },
     )
-    return request.build_absolute_uri(params) if request else settings.ALLOWED_HOSTS[0][:-1] + params
+
+    # Workaround `build_absolute_uri` without setting `HTTP_X_FORWARDED_PROTO` in setting.py
+    # to build photo url with http or https host
+    url = request.build_absolute_uri(params) if request else f'https://{settings.ALLOWED_HOSTS[0] + params}'
+    
+    return url.replace('http', 'https') if url.count('heroku') else url
 
   def save(self, *args, **kwargs) -> None:
     """Override the save method to set the id of type UUID for the photo"""

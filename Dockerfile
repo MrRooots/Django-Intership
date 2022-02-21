@@ -21,5 +21,5 @@ RUN \
 # Working directory
 COPY . .
 
-# Start server
-CMD gunicorn animals_api.wsgi:application --preload --workers 3 --bind 0.0.0.0:8000
+# Start server  --> If deploying locally set port to whatever you like
+CMD gunicorn animals_api.wsgi:application --preload --workers 3 --bind 0.0.0.0:$PORT

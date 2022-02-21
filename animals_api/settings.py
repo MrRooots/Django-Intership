@@ -1,4 +1,6 @@
 import environ
+import dj_database_url
+
 from pathlib import Path
 
 # Initialise environment variables
@@ -64,6 +66,7 @@ WSGI_APPLICATION = 'animals_api.wsgi.application'
 # Database
 # https://docs.djangoproject.com/en/4.0/ref/settings/#databases
 
+# Default database configuration
 DATABASES = {
   'default': {
     'ENGINE': 'django.db.backends.postgresql_psycopg2',
@@ -77,6 +80,9 @@ DATABASES = {
     },
   }
 }
+
+# Heroku dance with a tambourine
+DATABASES['default'].update(dj_database_url.config(conn_max_age=500))
 
 
 # Password validation

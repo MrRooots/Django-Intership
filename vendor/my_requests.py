@@ -9,7 +9,8 @@ class MyRequests:
   """Contains a lot of various requests to manipulate and test available server operations"""
   
   # Main url
-  URL = 'http://127.0.0.1:8000/pets/'
+  # URL = 'http://127.0.0.1:8000/pets/'
+  URL = 'https://animals-intership-api.herokuapp.com/pets/'
   
   # Each request headers
   HEADERS = {'api-key': 'TEST_API_KEY'}
@@ -92,7 +93,7 @@ class MyRequests:
     if has_photo is not None:
       if params != '?':
         params += '&'
-      params += f'has_photo={has_photo}'
+      params += f'has_photos={has_photo}'
     print(self.URL[:-1] + (params if params != '?' else ''))
     response = requests.get(
       url=self.URL + (params if params != '?' else ''),
@@ -106,25 +107,26 @@ class MyRequests:
     self.clear_database()
     self.spawn_animals(count=15)
     
-    # self.get_animals()
-    # self.get_animals(limit=5, offset=5)
+    self.get_animals(limit=5, offset=5)
     
     for _ in range(10):
       self.spawn_animal_with_photo()
     
-    # self.get_animals(limit=1500)
+    self.get_animals(limit=100)
     
     self.get_animals(limit=5, offset=5, has_photo=True)
+    self.get_animals(limit=5, offset=5, has_photo=False)
 
 
 if __name__ == '__main__':
   my_requests = MyRequests()
-  # my_requests.execute_operations_check()
+  my_requests.execute_operations_check()
+  # my_requests.get_animals(limit=5, offset=1, has_photo=True)
   # my_requests.clear_database()
-  # my_requests.spawn_animals(count=15)
+  # my_requests.spawn_animals(count=1)
+  # my_requests.spawn_animal_with_photo()
   # my_requests.get_animals(limit=1500)
-  my_requests.spawn_animal_with_photo()
-  # response = requests.get('http://127.0.0.1:8000/pets/129e12bc-33a7-4ffa-91cf-12cea0a354a0/photo/test_image.jpeg', headers=my_requests.HEADERS)
+  # response = requests.get('https://animals-intership-api.herokuapp.com/pets/b75ce5d5-6fdf-4a8d-be46-24836577b60b/photo/test_image.jpeg', headers=my_requests.HEADERS)
 
   # with open('test_image.jpeg', 'wb') as f:
   #   f.write(response.content)
