@@ -1,6 +1,7 @@
 """Module contains various requests to manipulate and test available server operations"""
 
 import json
+import os
 import random
 import requests
 import multiprocessing
@@ -120,14 +121,26 @@ class MyRequests:
 
 if __name__ == '__main__':
   my_requests = MyRequests()
-  my_requests.execute_operations_check()
+  # my_requests.execute_operations_check()
   # my_requests.get_animals(limit=5, offset=1, has_photo=True)
   # my_requests.clear_database()
   # my_requests.spawn_animals(count=1)
   # my_requests.spawn_animal_with_photo()
-  # my_requests.get_animals(limit=1500)
-  # response = requests.get('https://animals-intership-api.herokuapp.com/pets/b75ce5d5-6fdf-4a8d-be46-24836577b60b/photo/test_image.jpeg', headers=my_requests.HEADERS)
+  my_requests.get_animals(limit=1500)
+  
+  url = 'https://animals-intership-api.herokuapp.com/pets/e7d95faa-c5e0-4cc3-89b7-8038ab1144a5/photo/wallls.jpeg'
+  # path = './img/'
+  # for f in os.listdir(path):
+  #   if os.path.isfile(os.path.join(path, f)):
+  #     requests.post(
+  #       url, 
+  #       headers=my_requests.HEADERS, 
+  #       files={'photo': open(os.path.join(path, f), 'rb')}
+  #     )
 
-  # with open('test_image.jpeg', 'wb') as f:
-  #   f.write(response.content)
-  # my_requests.spawn_animals(count=1)
+  response = requests.get(
+    url=url,
+    headers=my_requests.HEADERS,
+  )
+  with open('test_image.jpeg', 'wb') as f:
+    f.write(response.content)
