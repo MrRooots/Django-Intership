@@ -8,6 +8,7 @@ Simple rest-api implementation using python3.8 and Django (pure Django, without 
   * Photo downloading by the url
   * SLI Command: `python manage.py export_animals [--has-photos {True, False}]`
   * Application deployed on heroku: `https://animals-intership-api.herokuapp.com/`
+  * Filled with demo data without images (due to heroku [storage system](https://devcenter.heroku.com/articles/dynos#ephemeral-filesystem) images are saved for a very short time)
 
 ### Deployment
   * Inside app folder in cmd run `docker-compose up`
