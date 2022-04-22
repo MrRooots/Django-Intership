@@ -122,7 +122,7 @@ if __name__ == '__main__':
   my_requests = MyRequests()
   # my_requests.execute_operations_check()
   # my_requests.get_animals(limit=10, offset=0, has_photo=True)
-  # my_requests.clear_database()
+  my_requests.clear_database()
   # my_requests.spawn_animals(count=1500)
   # my_requests.spawn_animal_with_photo()
 

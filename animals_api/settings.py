@@ -67,29 +67,29 @@ WSGI_APPLICATION = 'animals_api.wsgi.application'
 # https://docs.djangoproject.com/en/4.0/ref/settings/#databases
 
 # Default database configuration
-# DATABASES = {
-#   'default': {
-#     'ENGINE': 'django.db.backends.postgresql_psycopg2',
-#     'NAME': env('db_name'),
-#     'USER': env('db_user'),
-#     'PASSWORD': env('db_password'),
-#     'HOST': env('db_host'),
-#     'PORT': env('db_port'),
-#     'OPTIONS': {
-#         'options': '-c search_path=myschema,public',
-#     },
-#   }
-# }
-
 DATABASES = {
-    'default': {
-        'ENGINE': 'django.db.backends.sqlite3',
-        'NAME': 'mydatabase',
-    }
+  'default': {
+    'ENGINE': 'django.db.backends.postgresql_psycopg2',
+    'NAME': env('db_name'),
+    'USER': env('db_user'),
+    'PASSWORD': env('db_password'),
+    'HOST': env('db_host'),
+    'PORT': env('db_port'),
+    'OPTIONS': {
+        'options': '-c search_path=myschema,public',
+    },
+  }
 }
 
+# DATABASES = {
+#     'default': {
+#         'ENGINE': 'django.db.backends.sqlite3',
+#         'NAME': 'mydatabase',
+#     }
+# }
+
 # Heroku dance with a tambourine
-# DATABASES['default'].update(dj_database_url.config(conn_max_age=500))
+DATABASES['default'].update(dj_database_url.config(conn_max_age=500))
 
 
 # Password validation
