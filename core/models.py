@@ -17,13 +17,13 @@ class Animal(models.Model):
 
   # Animal id in database
   id = models.UUIDField(primary_key=True, unique=True, default=uuid.uuid4())
-  
+
   # Animal type { Dog | Cat }
   type = models.CharField(max_length=3, db_index=True)
-  
+
   # Animal name
   name = models.CharField(max_length=128, db_index=True)
-  
+
   # Animal birth year { Positive integer: 0 to 32767 }
   birth_year = models.PositiveSmallIntegerField(null=False)
 
@@ -35,7 +35,6 @@ class Animal(models.Model):
     """Animal age will be computed from `created_at` and current date"""
     return datetime.datetime.now().year - self.birth_year
 
-  
   def to_json(self, request=None, include_photo_id=True) -> dict:
     """Get full information about the animal as a json"""
     return AnimalToJsonSerializer.to_json(self, request, include_photo_id)
@@ -49,15 +48,14 @@ class Animal(models.Model):
       super(Animal, self).save(*args, **kwargs)
 
   def delete(self, using=None, keep_parents=False) -> None:
-    """Override the `delete` method to delete all dependent files while db record delete"""
-    for photo in self.photos.all():
-      photo.delete()
+    """Override the `delete` method to delete all dependent files """
+    self.photos.all().delete()
 
     try:
       shutil.rmtree(os.path.join(settings.MEDIA_ROOT, str(self.id)))
     except (FileNotFoundError, PermissionError) as error:
       print(f'Error during direction delete! {error}')
-      print(f'Trying to delete this path: {os.path.join(settings.MEDIA_ROOT, str(self.id))}')
+      print(f'Path: {os.path.join(settings.MEDIA_ROOT, str(self.id))}')
 
     super(Animal, self).delete()
 
@@ -72,16 +70,16 @@ class Photo(models.Model):
 
   # Photo id
   id = models.UUIDField(primary_key=True, unique=True, default=uuid.uuid4())
-  
+
   # Photo file name
   filename = models.CharField(max_length=255)
-  
+
   # Animal dependency
   animal = models.ForeignKey(
-    'Animal', 
-    on_delete=models.CASCADE, 
-    related_name='photos', 
-    null=True, 
+    'Animal',
+    on_delete=models.CASCADE,
+    related_name='photos',
+    null=True,
     blank=True,
   )
 
@@ -90,11 +88,11 @@ class Photo(models.Model):
   # ? So the absolute file url is built from setting.ALLOWED_HOSTS when requested from CLI
   def get_absolute_url(self, request) -> str:
     """Build an absolute url for the photo file and return it as a string"""
-    
+
     params = reverse(
       'get_photo',
       kwargs={
-        "animal_id": self.animal.id, 
+        "animal_id": self.animal.id,
         "filename": self.filename,
       },
     )
@@ -107,12 +105,12 @@ class Photo(models.Model):
         url = url.replace('http', 'https')
     else:
       url = f'https://{settings.ALLOWED_HOSTS[0] + params}'
-    
+
     return url
 
   def save(self, *args, **kwargs) -> None:
     """Override the save method to set the id of type UUID for the photo"""
-    
+
     try:
       super(Photo, self).save(*args, **kwargs)
     except IntegrityError:

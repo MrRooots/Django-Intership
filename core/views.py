@@ -16,7 +16,7 @@ class AnimalsView(View):
     View handles requests to /pets url:
       - GET:    get animals data as `JsonResponse`
       - POST:   create animal record in database
-      - DELETE: delete aniamal record and all dependent records
+      - DELETE: delete animal record and all dependent records
   """
 
   def get(self, request) -> JsonResponse:
@@ -26,8 +26,8 @@ class AnimalsView(View):
       animals = Animal.objects.all()[offset:offset+limit]
     else:
       animals = Animal.objects.filter(photos__isnull=not has_photos)[offset:offset+limit]
-      for animal in animals:
-        print(animal.id, animal.photos.all())
+      # for animal in animals:
+      #   print(animal.id, animal.photos.all())
 
     return JsonResponse(
       data={

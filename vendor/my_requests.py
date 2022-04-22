@@ -1,7 +1,6 @@
 """Module contains various requests to manipulate and test available server operations"""
 
 import json
-import os
 import random
 import requests
 import multiprocessing
@@ -10,8 +9,8 @@ class MyRequests:
   """Contains a lot of various requests to manipulate and test available server operations"""
   
   # Main url
-  # URL = 'http://127.0.0.1:8000/pets/'
-  URL = 'https://animals-intership-api.herokuapp.com/pets/'
+  URL = 'http://127.0.0.1:8000/pets/'  # Local address
+  # URL = 'https://animals-intership-api.herokuapp.com/pets/'
   
   # Each request headers
   HEADERS = {'api-key': 'TEST_API_KEY'}
@@ -74,7 +73,7 @@ class MyRequests:
     requests.post(
       url=f'{self.URL}{animal_id}/photo/',
       headers=self.HEADERS,
-      files={'animal_img': open('../../test_image.jpg','rb')}
+      files={'animal_img': open('./test_image.jpg','rb')}
     )
 
   def get_animals(self, limit: int=None, offset: int=None, has_photo: bool=None):
@@ -108,7 +107,7 @@ class MyRequests:
     self.clear_database()
     self.spawn_animals(count=15)
     
-    self.get_animals(limit=5, offset=5)
+    # self.get_animals(limit=5, offset=5)
     
     for _ in range(10):
       self.spawn_animal_with_photo()
@@ -122,13 +121,12 @@ class MyRequests:
 if __name__ == '__main__':
   my_requests = MyRequests()
   # my_requests.execute_operations_check()
-  # my_requests.get_animals(limit=5, offset=1, has_photo=True)
+  # my_requests.get_animals(limit=10, offset=0, has_photo=True)
   # my_requests.clear_database()
-  # my_requests.spawn_animals(count=1)
+  # my_requests.spawn_animals(count=1500)
   # my_requests.spawn_animal_with_photo()
-  my_requests.get_animals(limit=1500)
-  
-  url = 'https://animals-intership-api.herokuapp.com/pets/e7d95faa-c5e0-4cc3-89b7-8038ab1144a5/photo/wallls.jpeg'
+
+  # url = 'https://animals-intership-api.herokuapp.com/pets/e7d95faa-c5e0-4cc3-89b7-8038ab1144a5/photo/wallls.jpeg'
   # path = './img/'
   # for f in os.listdir(path):
   #   if os.path.isfile(os.path.join(path, f)):
@@ -138,9 +136,9 @@ if __name__ == '__main__':
   #       files={'photo': open(os.path.join(path, f), 'rb')}
   #     )
 
-  response = requests.get(
-    url=url,
-    headers=my_requests.HEADERS,
-  )
-  with open('test_image.jpeg', 'wb') as f:
-    f.write(response.content)
+  # response = requests.get(
+  #   url=url,
+  #   headers=my_requests.HEADERS,
+  # )
+  # with open('test_image.jpeg', 'wb') as f:
+  #   f.write(response.content)
